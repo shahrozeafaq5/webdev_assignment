@@ -1,10 +1,12 @@
 import Navbar from "../components/Navbar";
-
+import { CartProvider } from "@/context/CartContext";
+import ChatBot from "@/components/ChatBot"; // 👈 1. Import the ChatBot
+import { FavoritesProvider } from "@/context/FavoritesContext";
 export const metadata = {
   title: "PaperHaven",
   description: "Warm curated bookstore",
   icons: {
-    icon: "/fav.png",       // or "/favicon.ico"
+    icon: "/fav.png", 
     shortcut: "/favicon.ico",
     apple: "/icon.png",
   },
@@ -14,23 +16,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        
-        {/* Font */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-
-
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -61,8 +49,17 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="font-sans bg-cream text-ink antialiased">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">{children}</div>
+<CartProvider>
+          <FavoritesProvider> {/* 👈 2. Wrap here */}
+            
+            <Navbar />
+            <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">
+              {children}
+            </div>
+            <ChatBot />
+
+          </FavoritesProvider>
+        </CartProvider>
       </body>
     </html>
   );

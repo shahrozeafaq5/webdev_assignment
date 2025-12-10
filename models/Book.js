@@ -1,15 +1,31 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const BookSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true, trim: true },
-    author: { type: String, required: true, trim: true },
-    category: { type: String, default: "General", trim: true },
-    description: { type: String, default: "", trim: true },
-    cover: { type: String, default: "" }, // e.g. "/covers/atomic.jpg" OR a URL
-    price: { type: Number, default: 0 },
+const BookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, 'Please provide a title for this book.'],
+    maxlength: 60,
   },
-  { timestamps: true }
-);
+  author: {
+    type: String,
+    required: [true, 'Please provide an author name.'],
+    maxlength: 60,
+  },
+  price: {
+    type: Number,
+    required: [true, 'Please provide a price.'],
+  },
+  description: {
+    type: String,
+  },
+  coverImage: {
+    type: String, // You can store the URL of the image here
+    required: false,
+  },
+  category: {
+    type: String,
+  }
+}, { timestamps: true });
 
-export default mongoose.models.Book || mongoose.model("Book", BookSchema);
+// Check if the model already exists to prevent compiling it twice in dev mode
+export default mongoose.models.Book || mongoose.model('Book', BookSchema);
